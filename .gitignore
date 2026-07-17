@@ -1,0 +1,14 @@
+# Python / API
+api/venv/
+api/__pycache__/
+**/__pycache__/
+*.pyc
+.env
+
+# Node (por si algo queda fuera del alcance del front/.gitignore)
+node_modules/
+
+# Sistema operativo / editor
+.DS_Store
+.vscode/
+*.swp
