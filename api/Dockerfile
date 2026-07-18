@@ -1,14 +1,12 @@
-# --- Imagen base ---
-FROM python:3.12-slim
+FROM python:3.12-slim-trixie
 
-# --- Dependencias de sistema + driver ODBC de SQL Server ---
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
-    gnupg2 \
     unixodbc \
     unixodbc-dev \
-    && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
-    && curl https://packages.microsoft.com/config/debian/12/prod.list > /etc/apt/sources.list.d/mssql-release.list \
+    && curl -sSL -O https://packages.microsoft.com/config/debian/13/packages-microsoft-prod.deb \
+    && dpkg -i packages-microsoft-prod.deb \
+    && rm packages-microsoft-prod.deb \
     && apt-get update \
     && ACCEPT_EULA=Y apt-get install -y --no-install-recommends msodbcsql18 \
     && apt-get clean \
@@ -27,4 +25,4 @@ RUN chmod +x entrypoint.sh
 
 EXPOSE 8000
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["sh", "entrypoint.sh"]

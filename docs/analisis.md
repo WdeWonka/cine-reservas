@@ -130,6 +130,7 @@ Consecuencias casi inevitables del dominio, sin alternativa razonable:
 | RF-10 | El sistema genera un reporte de taquilla con: película, sala, horario, asientos ocupados, asientos disponibles, y estado de cada reserva.                                                              |
 | RF-11 | El sistema puede generar un Ticket por cada asiento confirmado.                                                                                                                                        |
 | RF-12 | El sistema permite visualizar el comprobante digital del Ticket.                                                                                                                                       |
+| RF-13 | El taquillero puede consultar el detalle de ocupación asiento por asiento de una función específica, viendo cuáles están libres u ocupados y, si están ocupados, a qué reserva pertenecen.            |
 
 ### 6.2 No funcionales
 
@@ -151,7 +152,7 @@ Consecuencias casi inevitables del dominio, sin alternativa razonable:
 | Reporte de taquilla                               | Obligatoria       | Solicitado explícitamente.                                                                                                    |
 | Integridad de datos y concurrencia                | Obligatoria       | Mayor riesgo técnico del sistema.                                                                                             |
 | Gestionar catálogo necesario para crear funciones | Obligatoria       | Dependencia técnica del requisito principal.                                                                                  |
-| CRUD completo del catálogo                        | Deseable          | No es el foco del ejercicio.                                                                                                  |
+| CRUD completo del catálogo                        | Deseable          | No es el foco del ejercicio, pero se implementó igual (rooms, movies, movie-functions).                                      |
 | Validación y sanitización básica                  | Obligatoria       | Higiene mínima no negociable.                                                                                                 |
 | Auditoría de cambios de estado                    | Deseable          | No bloquea el mínimo funcional.                                                                                               |
 | Actualización en tiempo real en pantalla          | Deseable          | Mejora de experiencia, no de correctitud.                                                                                     |
@@ -205,7 +206,7 @@ Consecuencias casi inevitables del dominio, sin alternativa razonable:
 ### CU-03 — Consultar disponibilidad de funciones
 
 **Actor:** Taquillero
-**Flujo principal:** buscar funciones; el sistema muestra ocupados/disponibles por función.
+**Flujo principal:** buscar funciones; el sistema muestra ocupados/disponibles por función. Opcionalmente, para una función puntual, el taquillero puede ver el detalle asiento por asiento (libre/ocupado y su reserva asociada).
 
 ### CU-04 — Consultar reporte de taquilla
 

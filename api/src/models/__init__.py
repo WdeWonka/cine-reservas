@@ -10,7 +10,7 @@ from src.db.session import Base
 
 
 def utcnow():
-    return datetime.now(timezone.utc)
+    return datetime.now(timezone.utc).replace(tzinfo=None)
 
 
 class Movie(Base):
@@ -22,6 +22,7 @@ class Movie(Base):
     # recalcula si este valor cambia después (ver docs/modelo-bd.md).
     duration_min = Column(SmallInteger, nullable=False)
     age_rating = Column(String(10), nullable=True)
+    is_active = Column(Boolean, nullable=False, default=True)
     created_at = Column(DateTime, nullable=False, default=utcnow)
 
 
@@ -30,6 +31,7 @@ class Room(Base):
 
     room_id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False, unique=True)
+    is_active = Column(Boolean, nullable=False, default=True)
     created_at = Column(DateTime, nullable=False, default=utcnow)
 
 
@@ -55,6 +57,7 @@ class MovieFunction(Base):
     # Fotografía histórica: start_datetime + Movie.duration_min al crear la
     # función. No se recalcula si la duración de la película cambia después.
     end_datetime = Column(DateTime, nullable=False)
+    is_active = Column(Boolean, nullable=False, default=True)
     created_at = Column(DateTime, nullable=False, default=utcnow)
 
     # El no-solapamiento de funciones en la misma sala se valida en la capa
@@ -74,6 +77,7 @@ class Reservation(Base):
     function_id = Column(Integer, ForeignKey("MovieFunction.function_id"), nullable=False, index=True)
     customer_name = Column(String(150), nullable=False)
     customer_phone = Column(String(30), nullable=True)
+    customer_email = Column(String(150), nullable=True)
     status = Column(String(20), nullable=False, index=True)
     expires_at = Column(DateTime, nullable=True)
     created_by = Column(Integer, ForeignKey("User.user_id"), nullable=False, index=True)

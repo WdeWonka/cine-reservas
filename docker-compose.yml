@@ -29,6 +29,7 @@ services:
       DB_USER: sa
       DB_PASSWORD: "${DB_SA_PASSWORD}"
       JWT_SECRET: "${JWT_SECRET}"
+      RESERVATION_HOLD_MINUTES: "${RESERVATION_HOLD_MINUTES}"
     ports:
       - "8000:8000"
     depends_on:
