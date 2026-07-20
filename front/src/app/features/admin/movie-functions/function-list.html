@@ -1,0 +1,104 @@
+<div class="page-header">
+  <h1>Funciones</h1>
+  <button class="btn btn--primary" type="button" (click)="toggleForm()">
+    {{ showForm() ? 'Cancelar' : '+ Nueva función' }}
+  </button>
+</div>
+
+@if (showForm()) {
+  <form class="card form-card" (ngSubmit)="createFunction()">
+    <div class="field">
+      <label for="new-movie">Película</label>
+      <select id="new-movie" name="new-movie" [(ngModel)]="newMovieId" required>
+        <option [ngValue]="null" disabled>Elegí una película</option>
+        @for (movie of movies(); track movie.movie_id) {
+          <option [ngValue]="movie.movie_id">{{ movie.title }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="new-room">Sala</label>
+      <select id="new-room" name="new-room" [(ngModel)]="newRoomId" required>
+        <option [ngValue]="null" disabled>Elegí una sala</option>
+        @for (room of rooms(); track room.room_id) {
+          <option [ngValue]="room.room_id">{{ room.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="new-date">Fecha (hora de Guatemala)</label>
+      <input id="new-date" name="new-date" type="date" [(ngModel)]="newDate" required />
+    </div>
+
+    <div class="field">
+      <label for="new-time">Hora</label>
+      <input id="new-time" name="new-time" type="time" [(ngModel)]="newTime" required />
+    </div>
+
+    <button class="btn btn--primary" type="submit">Crear función</button>
+  </form>
+}
+
+<div class="toolbar">
+  <label class="checkbox-field">
+    <input
+      type="checkbox"
+      [ngModel]="includeInactive()"
+      (ngModelChange)="toggleIncludeInactive()"
+    />
+    Mostrar deshabilitadas
+  </label>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Película</th>
+      <th>Sala</th>
+      <th>Horario</th>
+      <th>Ocupación</th>
+      <th>Estado</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (row of rows(); track row.fn.function_id) {
+      <tr>
+        <td>{{ row.movieTitle }}</td>
+        <td>{{ row.roomName }}</td>
+        <td>{{ formatDateTime(row.fn.start_datetime) }}</td>
+        <td>{{ row.fn.asientos_ocupados }} / {{ row.fn.asientos_totales }}</td>
+        <td>
+          <span class="badge" [class.badge--active]="row.fn.is_active" [class.badge--inactive]="!row.fn.is_active">
+            {{ row.fn.is_active ? 'Activa' : 'Inactiva' }}
+          </span>
+        </td>
+        <td class="actions">
+          <button
+            class="btn btn--icon"
+            type="button"
+            (click)="toggleActive(row.fn)"
+            [title]="row.fn.is_active ? 'Deshabilitar' : 'Habilitar'"
+          >
+            @if (row.fn.is_active) {
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <rect x="6" y="4" width="4" height="16" rx="1" />
+                <rect x="14" y="4" width="4" height="16" rx="1" />
+              </svg>
+            } @else {
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M8 5v14l11-7Z" />
+              </svg>
+            }
+          </button>
+        </td>
+      </tr>
+    } @empty {
+      <tr>
+        <td colspan="6" class="empty">No hay funciones.</td>
+      </tr>
+    }
+  </tbody>
+</table>

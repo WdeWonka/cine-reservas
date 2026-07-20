@@ -1,0 +1,23 @@
+.summary {
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-sm);
+
+  span {
+    color: var(--color-text-muted);
+  }
+}
+
+.disclaimer {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-subtle);
+  margin-bottom: var(--space-5);
+}

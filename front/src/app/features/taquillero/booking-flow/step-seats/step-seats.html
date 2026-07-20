@@ -1,0 +1,12 @@
+<h2>Elegí {{ requiredSeatCount() }} asiento(s)</h2>
+
+<app-seat-map
+  mode="selection"
+  [seats]="seats()"
+  [requiredSeatCount]="requiredSeatCount()"
+  (selectionChange)="onSelectionChange($event)"
+/>
+
+<button class="btn btn--primary" type="button" [disabled]="!isComplete()" (click)="confirm()">
+  Continuar ({{ selection().length }}/{{ requiredSeatCount() }})
+</button>

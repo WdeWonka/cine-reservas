@@ -1,0 +1,20 @@
+<h2>Datos del cliente</h2>
+
+<form (ngSubmit)="confirm()">
+  <div class="field">
+    <label for="customer-name">Nombre</label>
+    <input id="customer-name" name="customer-name" [(ngModel)]="name" required />
+  </div>
+
+  <div class="field">
+    <label for="customer-email">Correo</label>
+    <input id="customer-email" name="customer-email" type="email" [(ngModel)]="email" required />
+  </div>
+
+  <div class="field">
+    <label for="customer-phone">Teléfono (opcional)</label>
+    <input id="customer-phone" name="customer-phone" [(ngModel)]="phone" />
+  </div>
+
+  <button class="btn btn--primary" type="submit">Continuar</button>
+</form>

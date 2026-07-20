@@ -1,0 +1,135 @@
+<div class="page-header">
+  <h1>Películas</h1>
+  <button class="btn btn--primary" type="button" (click)="toggleForm()">
+    {{ showForm() ? 'Cancelar' : '+ Nueva película' }}
+  </button>
+</div>
+
+@if (showForm()) {
+  <form class="card form-card" (ngSubmit)="createMovie()">
+    <div class="field">
+      <label for="new-title">Título</label>
+      <input id="new-title" name="new-title" [(ngModel)]="newTitle" required />
+    </div>
+    <div class="field">
+      <label for="new-duration">Duración (min)</label>
+      <input
+        id="new-duration"
+        name="new-duration"
+        type="number"
+        min="1"
+        [(ngModel)]="newDurationMin"
+        required
+      />
+    </div>
+    <div class="field">
+      <label for="new-rating">Clasificación (opcional)</label>
+      <input id="new-rating" name="new-rating" [(ngModel)]="newAgeRating" />
+    </div>
+    <button class="btn btn--primary" type="submit">Guardar</button>
+  </form>
+}
+
+<div class="toolbar">
+  <input
+    class="search-input"
+    type="search"
+    placeholder="Buscar por título…"
+    [ngModel]="search()"
+    (ngModelChange)="search.set($event)"
+  />
+  <label class="checkbox-field">
+    <input
+      type="checkbox"
+      [ngModel]="includeInactive()"
+      (ngModelChange)="toggleIncludeInactive()"
+    />
+    Mostrar deshabilitadas
+  </label>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Título</th>
+      <th>Duración</th>
+      <th>Clasificación</th>
+      <th>Estado</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (movie of filteredMovies(); track movie.movie_id) {
+      @if (editingId() === movie.movie_id) {
+        <tr>
+          <td><input [(ngModel)]="editTitle" [name]="'edit-title-' + movie.movie_id" /></td>
+          <td>
+            <input
+              type="number"
+              [(ngModel)]="editDurationMin"
+              [name]="'edit-duration-' + movie.movie_id"
+            />
+          </td>
+          <td><input [(ngModel)]="editAgeRating" [name]="'edit-rating-' + movie.movie_id" /></td>
+          <td>
+            <span class="badge" [class.badge--active]="movie.is_active" [class.badge--inactive]="!movie.is_active">
+              {{ movie.is_active ? 'Activa' : 'Inactiva' }}
+            </span>
+          </td>
+          <td class="actions">
+            <button class="btn btn--icon" type="button" (click)="saveEdit(movie)" title="Guardar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            </button>
+            <button class="btn btn--icon" type="button" (click)="cancelEdit()" title="Cancelar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <path d="M18 6 6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </td>
+        </tr>
+      } @else {
+        <tr>
+          <td>{{ movie.title }}</td>
+          <td>{{ movie.duration_min }} min</td>
+          <td>{{ movie.age_rating || '—' }}</td>
+          <td>
+            <span class="badge" [class.badge--active]="movie.is_active" [class.badge--inactive]="!movie.is_active">
+              {{ movie.is_active ? 'Activa' : 'Inactiva' }}
+            </span>
+          </td>
+          <td class="actions">
+            <button class="btn btn--icon" type="button" (click)="startEdit(movie)" title="Editar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z" />
+              </svg>
+            </button>
+            <button
+              class="btn btn--icon"
+              type="button"
+              (click)="toggleActive(movie)"
+              [title]="movie.is_active ? 'Deshabilitar' : 'Habilitar'"
+            >
+              @if (movie.is_active) {
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <rect x="6" y="4" width="4" height="16" rx="1" />
+                  <rect x="14" y="4" width="4" height="16" rx="1" />
+                </svg>
+              } @else {
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M8 5v14l11-7Z" />
+                </svg>
+              }
+            </button>
+          </td>
+        </tr>
+      }
+    } @empty {
+      <tr>
+        <td colspan="5" class="empty">No hay películas.</td>
+      </tr>
+    }
+  </tbody>
+</table>

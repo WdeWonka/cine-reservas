@@ -1,0 +1,59 @@
+<div class="booking-flow">
+  <header class="flow-header">
+    <h1>Nueva reserva</h1>
+    <nav class="flow-nav">
+      @if (step() !== 'movie' && step() !== 'tickets') {
+        <button class="btn btn--secondary" type="button" (click)="goBack()">← Atrás</button>
+      }
+      <a class="btn btn--secondary" routerLink="/scan">Escanear ticket</a>
+      <button class="btn btn--secondary" type="button" (click)="logout()">Cerrar sesión</button>
+    </nav>
+  </header>
+
+  @switch (step()) {
+    @case ('movie') {
+      <app-step-movies (movieSelected)="onMovieSelected($event)" />
+    }
+    @case ('date') {
+      <app-step-date-functions
+        [movie]="selectedMovie()!"
+        (functionSelected)="onFunctionSelected($event)"
+      />
+    }
+    @case ('ticket-count') {
+      <app-step-ticket-count
+        [initialCount]="ticketCount()"
+        (countConfirmed)="onTicketCountConfirmed($event)"
+      />
+    }
+    @case ('seats') {
+      <app-step-seats
+        [functionId]="selectedFunction()!.function_id"
+        [requiredSeatCount]="ticketCount()"
+        (seatsSelected)="onSeatsSelected($event)"
+      />
+    }
+    @case ('customer') {
+      <app-step-customer (customerConfirmed)="onCustomerConfirmed($event)" />
+    }
+    @case ('payment') {
+      <app-step-payment
+        [movie]="selectedMovie()!"
+        [fn]="selectedFunction()!"
+        [seatCount]="selectedSeatIds().length"
+        [customer]="customer()!"
+        [submitting]="submitting()"
+        (paymentConfirmed)="onPaymentConfirmed()"
+      />
+    }
+    @case ('tickets') {
+      <app-step-tickets
+        [movie]="selectedMovie()!"
+        [fn]="selectedFunction()!"
+        [customer]="customer()!"
+        [tickets]="tickets()"
+        (startOver)="startOver()"
+      />
+    }
+  }
+</div>

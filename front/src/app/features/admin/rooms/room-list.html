@@ -1,0 +1,114 @@
+<div class="page-header">
+  <h1>Salas</h1>
+  <button class="btn btn--primary" type="button" (click)="toggleForm()">
+    {{ showForm() ? 'Cancelar' : '+ Nueva sala' }}
+  </button>
+</div>
+
+@if (showForm()) {
+  <form class="card form-card" (ngSubmit)="createRoom()">
+    <div class="field">
+      <label for="new-name">Nombre</label>
+      <input id="new-name" name="new-name" [(ngModel)]="newName" required />
+    </div>
+
+    <app-seat-map mode="layout" (layoutChange)="onLayoutChange($event)" />
+
+    <button class="btn btn--primary submit-room" type="submit">Crear sala</button>
+  </form>
+}
+
+<div class="toolbar">
+  <input
+    class="search-input"
+    type="search"
+    placeholder="Buscar por nombre…"
+    [ngModel]="search()"
+    (ngModelChange)="search.set($event)"
+  />
+  <label class="checkbox-field">
+    <input
+      type="checkbox"
+      [ngModel]="includeInactive()"
+      (ngModelChange)="toggleIncludeInactive()"
+    />
+    Mostrar deshabilitadas
+  </label>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Asientos</th>
+      <th>Estado</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (room of filteredRooms(); track room.room_id) {
+      @if (editingId() === room.room_id) {
+        <tr>
+          <td><input [(ngModel)]="editName" [name]="'edit-name-' + room.room_id" /></td>
+          <td>{{ room.asientos_totales }}</td>
+          <td>
+            <span class="badge" [class.badge--active]="room.is_active" [class.badge--inactive]="!room.is_active">
+              {{ room.is_active ? 'Activa' : 'Inactiva' }}
+            </span>
+          </td>
+          <td class="actions">
+            <button class="btn btn--icon" type="button" (click)="saveEdit(room)" title="Guardar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            </button>
+            <button class="btn btn--icon" type="button" (click)="cancelEdit()" title="Cancelar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <path d="M18 6 6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </td>
+        </tr>
+      } @else {
+        <tr>
+          <td>{{ room.name }}</td>
+          <td>{{ room.asientos_totales }}</td>
+          <td>
+            <span class="badge" [class.badge--active]="room.is_active" [class.badge--inactive]="!room.is_active">
+              {{ room.is_active ? 'Activa' : 'Inactiva' }}
+            </span>
+          </td>
+          <td class="actions">
+            <button class="btn btn--icon" type="button" (click)="startEdit(room)" title="Editar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z" />
+              </svg>
+            </button>
+            <button
+              class="btn btn--icon"
+              type="button"
+              (click)="toggleActive(room)"
+              [title]="room.is_active ? 'Deshabilitar' : 'Habilitar'"
+            >
+              @if (room.is_active) {
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <rect x="6" y="4" width="4" height="16" rx="1" />
+                  <rect x="14" y="4" width="4" height="16" rx="1" />
+                </svg>
+              } @else {
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M8 5v14l11-7Z" />
+                </svg>
+              }
+            </button>
+          </td>
+        </tr>
+      }
+    } @empty {
+      <tr>
+        <td colspan="4" class="empty">No hay salas.</td>
+      </tr>
+    }
+  </tbody>
+</table>

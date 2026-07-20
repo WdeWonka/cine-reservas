@@ -1,0 +1,22 @@
+<h2>{{ movie().title }}</h2>
+
+<div class="field">
+  <label for="date">Fecha</label>
+  <input
+    id="date"
+    type="date"
+    [ngModel]="selectedDate()"
+    (ngModelChange)="selectedDate.set($event)"
+  />
+</div>
+
+<div class="function-list">
+  @for (fn of functionsForDay(); track fn.function_id) {
+    <button type="button" class="function-card" (click)="functionSelected.emit(fn)">
+      <span class="time">{{ formatTime(fn.start_datetime) }}</span>
+      <span class="availability">{{ fn.asientos_disponibles }} disponibles</span>
+    </button>
+  } @empty {
+    <p class="empty">No hay funciones para esta película en la fecha elegida.</p>
+  }
+</div>

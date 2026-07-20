@@ -1,0 +1,52 @@
+<div class="page-header">
+  <h1>Reservas</h1>
+</div>
+
+<div class="toolbar">
+  <div class="field inline">
+    <label for="filter-function">Función</label>
+    <select id="filter-function" [(ngModel)]="selectedFunctionId" (ngModelChange)="load()">
+      <option [ngValue]="null">Todas</option>
+      @for (fn of functions(); track fn.function_id) {
+        <option [ngValue]="fn.function_id">#{{ fn.function_id }} — {{ formatDateTime(fn.start_datetime) }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="field inline">
+    <label for="filter-status">Estado</label>
+    <select id="filter-status" [(ngModel)]="selectedStatus" (ngModelChange)="load()">
+      <option [ngValue]="null">Todos</option>
+      @for (status of statuses; track status) {
+        <option [ngValue]="status">{{ status }}</option>
+      }
+    </select>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Cliente</th>
+      <th>Correo</th>
+      <th>Estado</th>
+      <th>Asientos</th>
+      <th>Creada</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (reservation of reservations(); track reservation.reservation_id) {
+      <tr>
+        <td>{{ reservation.customer_name }}</td>
+        <td>{{ reservation.customer_email || '—' }}</td>
+        <td><span class="badge badge--neutral">{{ reservation.status }}</span></td>
+        <td>{{ reservation.seat_ids.length }}</td>
+        <td>{{ formatDateTime(reservation.created_at) }}</td>
+      </tr>
+    } @empty {
+      <tr>
+        <td colspan="5" class="empty">No hay reservas con estos filtros.</td>
+      </tr>
+    }
+  </tbody>
+</table>

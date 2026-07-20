@@ -1,0 +1,18 @@
+<h2>¡Reserva confirmada!</h2>
+<p class="sent-notice">Enviado a {{ customer().email }} (simulado)</p>
+
+<div class="ticket-grid">
+  @for (ticket of tickets(); track ticket.ticket_id) {
+    <div class="ticket card">
+      <div class="ticket-info">
+        <span class="movie">{{ movie().title }}</span>
+        <span class="meta">{{ formatDateTime(fn().start_datetime) }}</span>
+        <span class="seat">Asiento {{ ticket.seat_label }}</span>
+        <span class="code">{{ ticket.ticket_code }}</span>
+      </div>
+      <app-qr-code [value]="ticket.ticket_code" [size]="120" />
+    </div>
+  }
+</div>
+
+<button class="btn btn--primary" type="button" (click)="startOver.emit()">Nueva reserva</button>

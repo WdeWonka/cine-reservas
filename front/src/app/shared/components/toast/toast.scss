@@ -1,0 +1,32 @@
+// Estilo mínimo funcional — el pulido visual final llega en la pasada
+// de features (paleta / tokens ya acordados).
+.toast-stack {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 1000;
+}
+
+.toast {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+  &--info {
+    background: #1c2b45;
+  }
+
+  &--success {
+    background: #1f6f4a;
+  }
+
+  &--error {
+    background: #a13b3b;
+  }
+}

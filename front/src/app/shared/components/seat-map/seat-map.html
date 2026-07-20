@@ -1,0 +1,79 @@
+@if (mode() === 'selection') {
+  <div class="seat-map seat-map--selection">
+    <div class="screen">Pantalla</div>
+
+    <div class="rows">
+      @for (row of seatsByRow(); track row.rowLabel) {
+        <div class="row">
+          <span class="row-label">{{ row.rowLabel }}</span>
+          <div class="seats">
+            @for (seat of row.seats; track seat.seatId) {
+              <button
+                type="button"
+                class="seat"
+                [class.seat--ocupado]="seat.ocupado"
+                [class.seat--selected]="isSelected(seat)"
+                [disabled]="seat.ocupado"
+                (click)="toggleSeat(seat)"
+                [title]="seat.seatLabel"
+              >
+                {{ seat.seatNumber }}
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="legend">
+      <span><i class="dot dot--free"></i> Libre</span>
+      <span><i class="dot dot--selected"></i> Seleccionado</span>
+      <span><i class="dot dot--ocupado"></i> Ocupado</span>
+    </div>
+  </div>
+} @else {
+  <div class="seat-map seat-map--layout">
+    <div class="layout-controls">
+      <div class="field">
+        <label for="seats-per-row">Asientos por fila</label>
+        <input
+          id="seats-per-row"
+          type="number"
+          min="1"
+          [ngModel]="seatsPerRow()"
+          (ngModelChange)="setSeatsPerRow($event)"
+        />
+      </div>
+
+      <div class="field">
+        <label for="new-row">Agregar fila (letra)</label>
+        <div class="row-input">
+          <input id="new-row" maxlength="1" [(ngModel)]="newRowLabel" (keyup.enter)="addRow()" />
+          <button class="btn btn--secondary" type="button" (click)="addRow()">Agregar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen">Pantalla</div>
+
+    <div class="layout-preview">
+      @for (row of layoutPreviewRows(); track row.label) {
+        <div class="row">
+          <span class="row-label">{{ row.label }}</span>
+          <div class="seats">
+            @for (seatNumber of row.seatNumbers; track seatNumber) {
+              <span class="seat seat--preview">{{ seatNumber }}</span>
+            }
+          </div>
+          <button class="btn btn--icon" type="button" (click)="removeRow(row.label)" title="Quitar fila">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      } @empty {
+        <p class="empty">Agregá al menos una fila para definir el layout.</p>
+      }
+    </div>
+  </div>
+}

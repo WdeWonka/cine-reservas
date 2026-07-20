@@ -1,0 +1,17 @@
+<h2>Elegí una película</h2>
+
+<div class="movie-grid">
+  @for (movie of movies(); track movie.movie_id) {
+    <button type="button" class="movie-card" (click)="movieSelected.emit(movie)">
+      <span class="movie-title">{{ movie.title }}</span>
+      <span class="movie-meta">
+        {{ movie.duration_min }} min
+        @if (movie.age_rating) {
+          · {{ movie.age_rating }}
+        }
+      </span>
+    </button>
+  } @empty {
+    <p class="empty">No hay películas en cartelera.</p>
+  }
+</div>

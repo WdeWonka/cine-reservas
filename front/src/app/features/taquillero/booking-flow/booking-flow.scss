@@ -1,0 +1,23 @@
+.booking-flow {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-5);
+  min-height: 100dvh;
+}
+
+.flow-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+}
+
+.flow-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.flow-nav a {
+  text-decoration: none;
+}

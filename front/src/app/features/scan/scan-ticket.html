@@ -1,0 +1,34 @@
+<div class="scan-page">
+  <div class="card scan-card">
+    <h1>Escanear ticket</h1>
+    <p class="subtitle">Pegá o tipeá el código del ticket (simula el lector de QR)</p>
+
+    <form (ngSubmit)="scan()">
+      <div class="field">
+        <label for="ticket-code">Código del ticket</label>
+        <input
+          id="ticket-code"
+          name="ticket-code"
+          [(ngModel)]="ticketCode"
+          autocomplete="off"
+          required
+        />
+      </div>
+      <button class="btn btn--primary" type="submit" [disabled]="scanning()">
+        {{ scanning() ? 'Escaneando…' : 'Escanear' }}
+      </button>
+    </form>
+
+    @if (result(); as scan) {
+      <div class="result result--success">
+        <strong>{{ scan.customer_name }}</strong>
+        <span>Asiento(s): {{ seatLabels(scan) }}</span>
+        <span>Estado: {{ scan.status }}</span>
+      </div>
+    }
+
+    @if (errorMessage(); as message) {
+      <div class="result result--error">{{ message }}</div>
+    }
+  </div>
+</div>

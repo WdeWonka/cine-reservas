@@ -1,0 +1,20 @@
+<h2>Resumen de la compra</h2>
+
+<div class="summary card">
+  <div class="row"><span>Película</span><strong>{{ movie().title }}</strong></div>
+  <div class="row"><span>Función</span><strong>{{ formatDateTime(fn().start_datetime) }}</strong></div>
+  <div class="row"><span>Asientos</span><strong>{{ seatCount() }}</strong></div>
+  <div class="row"><span>Cliente</span><strong>{{ customer().name }}</strong></div>
+  <div class="row"><span>Correo</span><strong>{{ customer().email }}</strong></div>
+</div>
+
+<p class="disclaimer">Simulación de pasarela de pago — no se procesa ningún cobro real.</p>
+
+<button
+  class="btn btn--primary"
+  type="button"
+  [disabled]="submitting()"
+  (click)="paymentConfirmed.emit()"
+>
+  {{ submitting() ? 'Procesando…' : 'Confirmar y pagar' }}
+</button>
