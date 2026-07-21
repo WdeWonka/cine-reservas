@@ -102,7 +102,7 @@ Consecuencias casi inevitables del dominio, sin alternativa razonable:
    | `Reservada`  | `Confirmada` | —                                                                |
    | `Reservada`  | `Cancelada`  | Función no iniciada                                              |
    | `Reservada`  | `Expirada`   | Venció el tiempo límite sin confirmarse                          |
-   | `Confirmada` | `Utilizada`  | —                                                                |
+   | `Confirmada` | `Utilizada`  | Una vez se utilize el ticket                                     |
    | `Confirmada` | `Cancelada`  | Función no iniciada                                              |
 
    Cualquier transición no listada se considera inválida. El enunciado no define qué ocurre con una reserva `Confirmada` cuyo cliente no se presenta (ver sección 9); el tratamiento adoptado para esta prueba técnica se documenta en la bitácora de decisiones.
