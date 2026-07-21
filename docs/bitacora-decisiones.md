@@ -179,6 +179,4 @@ Corregidos porque estaban objetivamente rotos, no porque hubiera una decisión e
 - `StepSeats` leía un `input.required` dentro del constructor — Angular solo lo garantiza resuelto a partir de `ngOnInit`. Movido ahí.
 - 6 íconos Unicode (`✕ ✓ ✎ ⏸ ▶ −`) no renderizaban en algunos sistemas/fuentes (tofu boxes) — reemplazados por `<svg>` inline.
 
-## Sin información suficiente para documentar
 
-- **Incidente bcrypt/passlib**: `requirements.txt` fija `bcrypt==4.0.1` junto a `passlib[bcrypt]==1.7.4` (combinación típica del bug conocido donde `passlib` 1.7.4 no reconoce el atributo de versión de `bcrypt` ≥4.1). Este pin ya estaba presente en el primer diff que vi al arrancar la sesión — no participé de ese diagnóstico ni de esa decisión, así que no tengo el razonamiento real para documentarlo acá. Si me contás qué pasó, lo agrego.
